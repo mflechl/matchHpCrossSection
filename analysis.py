@@ -3,19 +3,21 @@ from tables import *
 from mh_detail import *
 
 from scale_var import *
+from scale_var_new import *
 from scaleplot import *
 from grid import *
 
 def create_all_tables():
-#	create_tables("pdf_error", pdfs_pdf_err, m_Hs[cm_energy])
-#	create_tables("ct10_alphas", pdfs_als_err[0:1], m_Hs[cm_energy])
-#	create_tables("mstw_alphas", pdfs_als_err[1:3], m_Hs[cm_energy])
-#	create_tables("nnpdf_alphas", pdfs_als_err[3:], m_Hs[cm_energy], as_name = True)
-#	create_tables("mstw_mb", pdfs_mb_err[0:1], m_Hs[cm_energy])
-#	create_tables("nnpdf_mb", pdfs_mb_err[1:], m_Hs[cm_energy], mb_name = True)
-	create_scale_var_tables(m_Hs[cm_energy])
-#	create_scaleplot_tables(m_Hs[cm_energy])
-#	create_tanbeta_tables(m_Hs[cm_energy])
+	create_tables("pdf_error", pdfs_pdf_err, m_Hs[cm_energy])
+	create_tables("ct10_alphas", pdfs_als_err[0:1], m_Hs[cm_energy])
+	create_tables("mstw_alphas", pdfs_als_err[1:3], m_Hs[cm_energy])
+	create_tables("nnpdf_alphas", pdfs_als_err[3:], m_Hs[cm_energy], as_name = True)
+	create_tables("mstw_mb", pdfs_mb_err[0:1], m_Hs[cm_energy])
+	create_tables("nnpdf_mb", pdfs_mb_err[1:], m_Hs[cm_energy], mb_name = True)
+##	create_scale_var_tables(m_Hs[cm_energy])
+	create_scale_var_new_tables(m_Hs[cm_energy])
+##	create_scaleplot_tables(m_Hs[cm_energy])
+	create_tanbeta_tables(m_Hs[cm_energy])
 
 from pdf_error import *
 from alphas_pdf_error import *
@@ -266,13 +268,15 @@ def ct10_analysis():
 	print "***************************************"
 
 	x = [m_H[0] for m_H in m_Hs[cm_energy]]
-	scale_var = [get_scale_var(m) for m in x]
+	scale_var = [get_scale_var_new(m) for m in x]  #mf!
 
 	def print_line(pdf_data, pdf, i, start):
 		res = pdf_data[pdf][i]
 
-		print " %4s   %8s   %.2e   %.2e     +%.2e       +%.2e       +%.2e       +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], scale_var[i][2], res["combinedup_nlo"])
-		print "                                           -%.2e       -%.2e       -%.2e       -%.2e" % (res["pdflo_nlo"], res["alphaslo_nlo"], scale_var[i][1], res["combinedlo_nlo"])
+#		print " %4s   %8s   %.2e   %.2e     +%.2e       +%.2e       +%.2e       +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], scale_var[i][2], res["combinedup_nlo"])
+#		print "                                           -%.2e       -%.2e       -%.2e       -%.2e" % (res["pdflo_nlo"], res["alphaslo_nlo"], scale_var[i][1], res["combinedlo_nlo"])
+		print " %4s   %8s   %.2e   %.2e     +%.2e       +%.2e       +%.2e       +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], scale_var[i][2], res["combinedup_nlo"]+scale_var[i][2])
+		print "                                           -%.2e       -%.2e       -%.2e       -%.2e" % (res["pdflo_nlo"], res["alphaslo_nlo"], scale_var[i][1], res["combinedlo_nlo"]+scale_var[i][1])
 
 		if latex_res:
 			latex_res.writelines([
@@ -375,13 +379,15 @@ def mstw_analysis():
 	print "***************************************"
 
 	x = [m_H[0] for m_H in m_Hs[cm_energy]]
-	scale_var = [get_scale_var(m) for m in x]
+	scale_var = [get_scale_var_new(m) for m in x]  #mf!
 
 	def print_line(pdf_data, pdf, i, start):
 		res = pdf_data[pdf][i]
 
-		print " %4s   %8s   %.2e   +%.2e  %.2e    +%.2e      +%.2e      +%.2e      +%.2e      +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["pdfup_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], res["mbup_nlo"], scale_var[i][2], res["combinedup_nlo"])
-		print "                              -%.2e              -%.2e      -%.2e      -%.2e      -%.2e      -%.2e" % (res["pdflo_lo"], res["pdflo_nlo"], res["alphaslo_nlo"], res["mblo_nlo"], scale_var[i][1], res["combinedlo_nlo"])
+#		print " %4s   %8s   %.2e   +%.2e  %.2e    +%.2e      +%.2e      +%.2e      +%.2e      +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["pdfup_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], res["mbup_nlo"], scale_var[i][2], res["combinedup_nlo"])
+#		print "                              -%.2e              -%.2e      -%.2e      -%.2e      -%.2e      -%.2e" % (res["pdflo_lo"], res["pdflo_nlo"], res["alphaslo_nlo"], res["mblo_nlo"], scale_var[i][1], res["combinedlo_nlo"])
+		print " %4s   %8s   %.2e   +%.2e  %.2e    +%.2e      +%.2e      +%.2e      +%.2e      +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["central_lo"], res["pdfup_lo"], res["central_nlo"], res["pdfup_nlo"], res["alphasup_nlo"], res["mbup_nlo"], scale_var[i][2], res["combinedup_nlo"]+scale_var[i][2])
+		print "                              -%.2e              -%.2e      -%.2e      -%.2e      -%.2e      -%.2e" % (res["pdflo_lo"], res["pdflo_nlo"], res["alphaslo_nlo"], res["mblo_nlo"], scale_var[i][1], res["combinedlo_nlo"]+scale_var[i][1])
 
 		if latex_res:
 			latex_res.writelines([
@@ -485,13 +491,13 @@ def nnpdf_analysis():
 	print "***************************************"
 
 	x = [m_H[0] for m_H in m_Hs[cm_energy]]
-	scale_var = [get_scale_var(m) for m in x]
+	scale_var = [get_scale_var_new(m) for m in x]  #mf!
 
 	def print_line(pdf_data, pdf, i, start):
 		res = pdf_data[pdf][i]
 
-		print " %4s   %8s   %.2e   +%.2e  %.2e    +%.2e      +%.2e      +%.2e      +%.2e      +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["pdf_central_lo"], res["pdfup_lo"], res["pdf_central_nlo"], res["pdfup_nlo"], res["alphaspdfup_nlo"], res["mbpdfup_nlo"], scale_var[i][2], res["combinedup_nlo"])
-		print "                              -%.2e              -%.2e      -%.2e      -%.2e      -%.2e      -%.2e" % (res["pdflo_lo"], res["pdflo_nlo"], res["alphaspdflo_nlo"], res["mbpdflo_nlo"], scale_var[i][1], res["combinedlo_nlo"])
+		print " %4s   %8s   %.2e   +%.2e  %.2e    +%.2e      +%.2e      +%.2e      +%.2e      +%.2e"  % ((m_Hs[cm_energy][i][0] if start else ""), pdf, res["pdf_central_lo"], res["pdfup_lo"], res["pdf_central_nlo"], res["pdfup_nlo"], res["alphaspdfup_nlo"], res["mbpdfup_nlo"], scale_var[i][2], res["combinedup_nlo"]+scale_var[i][2])
+		print "                              -%.2e              -%.2e      -%.2e      -%.2e      -%.2e      -%.2e" % (res["pdflo_lo"], res["pdflo_nlo"], res["alphaspdflo_nlo"], res["mbpdflo_nlo"], scale_var[i][1], res["combinedlo_nlo"]+scale_var[i][1])
 
 		if latex_res:
 			latex_res.writelines([
@@ -600,7 +606,8 @@ def combined_analysis():
 	print "***************************************"
 
 	x = [m_H[0] for m_H in m_Hs[cm_energy]]
-	scale_var = [get_scale_var(m) for m in x]
+#	scale_var = [get_scale_var_new(m) for m in x]  #mf!
+	scale_var = [get_scale_var_new(m) for m in x]  #mf!!
 
 	def print_line(pdf_data, pdf, i, start):
 		res = pdf_data[pdf][i]
@@ -708,7 +715,7 @@ def analysis_all():
 
 
 	x = [m_H[0] for m_H in m_Hs[cm_energy]]
-	scale_var = [get_scale_var(m) for m in x]
+	scale_var = [get_scale_var_new(m) for m in x]  #mf!
 
 	def print_line(pdf_data, pdf, i, start):
 		res = pdf_data[pdf][i]
@@ -847,11 +854,12 @@ if __name__ == "__main__":
 				latex_res = open(sys.argv[3], "w")
 
 		if sys.argv[1] == "scale_var":
-                        print "Doing scale var analysis"
 			scale_var_analysis(m_Hs[cm_energy], latex_res)
-                        print "Done"
 			exit()
-		if sys.argv[1] == "scaleplot":
+		elif sys.argv[1] == "scale_var_new":
+			scale_var_new_analysis(m_Hs[cm_energy], latex_res)
+			exit()
+		elif sys.argv[1] == "scaleplot":
 			scaleplot_analysis(m_Hs[cm_energy], latex_res)
 			exit()
 		elif sys.argv[1] == "tables":

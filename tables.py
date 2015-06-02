@@ -113,7 +113,7 @@ def create_tables(name, pdfs, m_Hs, as_name = False, mb_name = False):
 		line, res = search_line("\s*M_H\s*=\s*([0-9.]+)", f)
 		M_H = float(res.group(1))
 
-		line, res = search_line("\s*inverse\s+factor\s+for\s+scale:\s*([0-9.]+)", f)
+		line, res = search_line("\s*inverse\s+factor\s+for\s+scale\s+qf\s+qr\s+qb:\s*([0-9.]+)", f)
 		inv_scafac = float(res.group(1))
 
 		line, res = search_line("\s*a_s\(M_Z\)\s*=\s*([0-9.]+)\s*at LO", f)

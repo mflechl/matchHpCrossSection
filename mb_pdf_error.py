@@ -16,8 +16,10 @@ mb_nnpdfgaussian = False
 def mb_pdf_error1(m_H):
 	# Create bins for gaussian peak around 0.118
 
-	N_repl = [ (i, int(round(exp( - ( i - 4.75)**2 / (2.0*(0.25)**2) ) * 100))) for i in [4.25, 4.5, 4.75, 5.0, 5.25]]
-#	N_repl = [ (i, int(round(exp( - ( i - 4.75)**2 / (2.0*(0.25)**2) ) * 100))) for i in [4.00, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5]]
+	N_cent = 100
+
+	N_repl = [ (i, int(round(exp( - ( i - 4.75)**2 / (2.0*(0.10)**2) ) * N_cent))) for i in [4.25, 4.5, 4.75, 5.0, 5.25]] #MF
+#	N_repl = [ (i, int(round(exp( - ( i - 4.75)**2 / (2.0*(0.25)**2) ) * 100))) for i in [4.25, 4.5, 4.75, 5.0, 5.25]]
 
 	global mb_nnpdfgaussian
 	if not mb_nnpdfgaussian:
@@ -36,6 +38,7 @@ def mb_pdf_error1(m_H):
 
 	for repl in N_repl:
 		data = read_table("NNPDF21_mb%d_%dGeV" % (repl[0]*100, m_H))
+#		data = read_table("NNPDF21_mb%d_%dGeV" % (repl[0]*N_cent, m_H))
 		N += repl[1]
 		for i in range(1, repl[1] + 1):
 			d = data[i]
@@ -97,8 +100,10 @@ def mb_pdf_error3(m_H):
 	mstw_mb = read_table("MSTW2008mb_%dGeV" % m_H)
 	mstw = read_table("MSTW2008_%dGeV" % m_H) 
 
-	err_p_nlo = mstw_mb[4][4] - mstw[0][4]
-	err_m_nlo = mstw_mb[3][4] - mstw[0][4]
+	err_p_nlo = ( mstw_mb[4][4] - mstw[0][4] ) * 0.24   #MF
+	err_m_nlo = ( mstw_mb[3][4] - mstw[0][4] ) * 0.24   #MF
+
+        print "X %d" % err_p_nlo 
 
 	if err_m_nlo > 0:
 		if err_m_nlo > err_p_nlo:

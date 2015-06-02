@@ -16,7 +16,7 @@ def create_scale_var_tables(m_Hs):
 
 	for i in range(1, jobs+1):
 		if not path.isfile("jobs_%s/job_scale_var%d" % (cm_energy, i)):
-			print "File jobs_%s/job_scale_var%d missing." % (cm_energy, i)
+			print "File job_%s/job_scale_var%d missing." % (cm_energy, i)
 			continue
 
 #		print "Processing job_%s/job_scale_var%d" % (cm_energy, i)
